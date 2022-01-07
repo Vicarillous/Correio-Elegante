@@ -1,5 +1,6 @@
 import React from 'react';
 import {Text, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 import HomeStyle from './HomeStyle';
 import ImageTop from '../assets/svg/ImageTop.svg';
@@ -8,7 +9,8 @@ import Botao from './Botao';
 
 const Home = ({navigation}) => {
   return (
-    <View style={HomeStyle.Container}>
+    <SafeAreaView style={HomeStyle.Container}>
+      
       <View style={HomeStyle.topHome}>
         <ImageTop />
       </View>
@@ -35,7 +37,7 @@ const Home = ({navigation}) => {
           </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

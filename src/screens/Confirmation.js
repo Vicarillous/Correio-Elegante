@@ -1,14 +1,14 @@
 import React from 'react';
 import {View, Text} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 import ConfirmationStyle from './ConfirmationStyle';
-
 import ConfirmationCard from '../assets/svg/ConfirmationCard.svg';
 import Group from '../assets/svg/Group 1418.svg';
 
 const Confirmation = () => {
   return (
-    <View style={ConfirmationStyle.container}>
+    <SafeAreaView style={ConfirmationStyle.container}>
       <View style={ConfirmationStyle.card}>
         <View style={{alignItems: 'center', paddingTop: 20}}>
           <Group />
@@ -22,7 +22,7 @@ const Confirmation = () => {
           <ConfirmationCard />
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

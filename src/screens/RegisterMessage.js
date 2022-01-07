@@ -1,22 +1,23 @@
 import React, {useState} from 'react';
 import {
-  SafeAreaView,
   View,
   Text,
   TextInput,
   FlatList,
   TouchableOpacity,
   StyleSheet,
-  KeyboardAvoidingView,
 } from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+
 import RegisterMessageStyle from './RegisterMessageStyle';
+import Botao from './Botao';
 
 import Group from '../assets/svg/Group 1418.svg';
 import ChampagneLollipop from '../assets/svg/Champagne + lollipop.svg';
 import FastFood from '../assets/svg/Fast-food-group.svg';
 import FrenchFriesSoda from '../assets/svg/French Fries + soda.svg';
 import WineCheese from '../assets/svg/Wine + Cheese.svg';
-import Botao from './Botao';
+
 
 const DATA = [
   {
@@ -71,7 +72,7 @@ const RegisterMessage = ({navigation}) => {
   };
 
   return (
-    <KeyboardAvoidingView style={RegisterMessageStyle.container}>
+    <SafeAreaView style={RegisterMessageStyle.container}>
       <View style={RegisterMessageStyle.topView}>
         <Text style={RegisterMessageStyle.topTitle}>
           Você gostaria de se identificar?
@@ -128,7 +129,7 @@ const RegisterMessage = ({navigation}) => {
           </Botao>
         </View>
       </View>
-    </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
