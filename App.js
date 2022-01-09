@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import RNBootSplash from 'react-native-bootsplash';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
@@ -10,7 +10,7 @@ import RegisterMessage from './src/screens/RegisterMessage';
 import Confirmation from './src/screens/Confirmation';
 
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 const App = () => {
   return (
@@ -23,6 +23,7 @@ const App = () => {
           initialRouteName="Home"
           screenOptions={{
             headerShown: false,
+            presentation: 'modal'
           }}>
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="RegisterMessage" component={RegisterMessage} />

@@ -8,6 +8,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import axios from 'axios';
 
 import RegisterMessageStyle from './RegisterMessageStyle';
 import Botao from './Botao';
@@ -65,12 +66,29 @@ const RegisterMessage = ({navigation}) => {
     );
   };
 
+  const [inputNome, setInputNome] = useState(null);
   const [inputEmail, setInputEmail] = useState(null);
+  const [inputMsg, setInputMsg] = useState(null);
 
-  const handleInputChange = e => {
-    setInputEmail(e);
-  };
+  const click = () => {
+    // const campos = {
+    //   nome: inputNome,
+    //   email: inputEmail,
+    //   mensagem: inputMsg,
+    //   refeicao: selectedId,
+    // };
+    // console.log(campos);
 
+    axios.post('https://correio-elegante1.herokuapp.com/send', {
+      nome: inputNome,
+      email: inputEmail,
+      mensagem: inputMsg,
+      refeicao: selectedId,
+    });
+
+    navigation.navigate('Confirmation');
+  }
+  
   return (
     <SafeAreaView style={RegisterMessageStyle.container}>
       <View style={RegisterMessageStyle.topView}>
@@ -78,6 +96,8 @@ const RegisterMessage = ({navigation}) => {
           Você gostaria de se identificar?
         </Text>
         <TextInput
+          onChangeText={setInputNome}
+          value={inputNome}
           style={RegisterMessageStyle.topInput}
           placeholder="Digite seu nome ou apelido"
         />
@@ -108,7 +128,7 @@ const RegisterMessage = ({navigation}) => {
         <View style={{paddingHorizontal: 35, paddingTop: 20}}>
           <Text style={RegisterMessageStyle.bottomTitle}>Email</Text>
           <TextInput
-            onChangeText={handleInputChange}
+            onChangeText={setInputEmail}
             value={inputEmail}
             style={RegisterMessageStyle.bottomInput}
             placeholder="Digite o email dele ou dela"
@@ -116,6 +136,8 @@ const RegisterMessage = ({navigation}) => {
           <View style={{height: 20}}></View>
           <Text style={RegisterMessageStyle.bottomTitle}>Surpreenda</Text>
           <TextInput
+            onChangeText={setInputMsg}
+            value={inputMsg}
             multiline={true}
             numberOfLines={5}
             style={[RegisterMessageStyle.bottomInput]}
@@ -124,7 +146,8 @@ const RegisterMessage = ({navigation}) => {
         </View>
         <View
           style={{flex: 1, justifyContent: 'center', paddingHorizontal: 35}}>
-          <Botao click={() => navigation.navigate('Confirmation')}>
+          <Botao
+            click={click}>
             ENVIAR CORREIO
           </Botao>
         </View>
