@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import axios from 'axios';
+import {validate} from 'react-email-validator';
 
 import RegisterMessageStyle from './RegisterMessageStyle';
 import Botao from './Botao';
@@ -19,7 +20,7 @@ import FastFood from '../assets/svg/Fast-food-group.svg';
 import FrenchFriesSoda from '../assets/svg/French Fries + soda.svg';
 import WineCheese from '../assets/svg/Wine + Cheese.svg';
 
-
+//FlatList
 const DATA = [
   {
     id: '1',
@@ -46,8 +47,10 @@ const Item = ({item, onPress, borderColor, marginLeft, marginRight}) => (
     <View style={[styles.title]}>{item.title}</View>
   </TouchableOpacity>
 );
+//-----------------------------
 
 const RegisterMessage = ({navigation}) => {
+  //Flatlist
   const [selectedId, setSelectedId] = useState(null);
 
   const renderItem = ({item}) => {
@@ -65,37 +68,51 @@ const RegisterMessage = ({navigation}) => {
       />
     );
   };
+  //-----------------------------
 
-  const [inputNome, setInputNome] = useState(null);
-  const [inputEmail, setInputEmail] = useState(null);
-  const [inputMsg, setInputMsg] = useState(null);
+  const [inputNome, setInputNome] = useState('');
+  const [inputEmail, setInputEmail] = useState('');
+  const [inputMsg, setInputMsg] = useState('');
+  const [isValid, setIsValid] = useState('');
 
-  const click = () => {
+  const enviarCorreio = () => {
     // const campos = {
-    //   nome: inputNome,
-    //   email: inputEmail,
-    //   mensagem: inputMsg,
+    //   nome: inputNome.trim(),
+    //   email: inputEmail.trim(),
+    //   mensagem: inputMsg.trim(),
     //   refeicao: selectedId,
     // };
     // console.log(campos);
 
-    axios.post('https://correio-elegante1.herokuapp.com/send', {
-      nome: inputNome,
-      email: inputEmail,
-      mensagem: inputMsg,
-      refeicao: selectedId,
-    });
+    if (validate(inputEmail)) {
+      setIsValid('');
+      axios.post('https://correio-elegante1.herokuapp.com/send', {
+        nome: inputNome.trim(),
+        email: inputEmail.trim(),
+        mensagem: inputMsg.trim(),
+        refeicao: selectedId,
+      });
+      navigation.navigate('Confirmation');
+      setInputEmail('');
+      setInputMsg('');
+      setInputNome('');
+      setSelectedId('');
+    } else {
+      setIsValid('Email inválido!');
+    }
+  };
 
-    navigation.navigate('Confirmation');
-  }
-  
   return (
+    //Top
     <SafeAreaView style={RegisterMessageStyle.container}>
       <View style={RegisterMessageStyle.topView}>
         <Text style={RegisterMessageStyle.topTitle}>
           Você gostaria de se identificar?
         </Text>
         <TextInput
+          onEndEditing={value => {
+            setInputNome(value.nativeEvent.text.trim());
+          }}
           onChangeText={setInputNome}
           value={inputNome}
           style={RegisterMessageStyle.topInput}
@@ -103,6 +120,7 @@ const RegisterMessage = ({navigation}) => {
         />
       </View>
 
+      {/* Bot */}
       <View style={RegisterMessageStyle.bottomView}>
         <View style={{alignItems: 'center', paddingTop: 20}}>
           <Group />
@@ -114,6 +132,7 @@ const RegisterMessage = ({navigation}) => {
           ]}>
           Escolha uma refeição abaixo
         </Text>
+        {/* Refeição */}
         <View>
           <FlatList
             showsHorizontalScrollIndicator={false}
@@ -125,17 +144,36 @@ const RegisterMessage = ({navigation}) => {
           />
         </View>
 
+        {/* Email */}
         <View style={{paddingHorizontal: 35, paddingTop: 20}}>
           <Text style={RegisterMessageStyle.bottomTitle}>Email</Text>
           <TextInput
+            onEndEditing={value => {
+              setInputEmail(value.nativeEvent.text.trim());
+            }}
             onChangeText={setInputEmail}
             value={inputEmail}
             style={RegisterMessageStyle.bottomInput}
             placeholder="Digite o email dele ou dela"
           />
-          <View style={{height: 20}}></View>
+
+          {/* Mensagem */}
+          <View style={{minHeight: 20}}>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Medium',
+                color: '#e06c88',
+                paddingTop: 5,
+                paddingLeft: 10,
+              }}>
+              {isValid}
+            </Text>
+          </View>
           <Text style={RegisterMessageStyle.bottomTitle}>Surpreenda</Text>
           <TextInput
+            onEndEditing={value => {
+              setInputMsg(value.nativeEvent.text.trim());
+            }}
             onChangeText={setInputMsg}
             value={inputMsg}
             multiline={true}
@@ -144,12 +182,10 @@ const RegisterMessage = ({navigation}) => {
             placeholder="Solte o verbo para seu/sua amado(a)"
           />
         </View>
+        {/* Botão de enviar */}
         <View
           style={{flex: 1, justifyContent: 'center', paddingHorizontal: 35}}>
-          <Botao
-            click={click}>
-            ENVIAR CORREIO
-          </Botao>
+          <Botao click={enviarCorreio}>ENVIAR CORREIO</Botao>
         </View>
       </View>
     </SafeAreaView>
